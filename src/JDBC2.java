@@ -1,8 +1,6 @@
 //Making GUI for a database
 import java.sql.*;
-
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.*;
 
@@ -172,8 +170,8 @@ public class JDBC2 extends JFrame implements ActionListener
         try{   
             Class.forName("org.postgresql.Driver");
             CONNEX = DriverManager.getConnection
-                    ("jdbc:postgresql://127.0.01:5432/EHR", "postgres",
-                            "Printer28");
+                    ("jdbc:postgresql://127.0.0.1:5433/EHR", "postgres",
+                            "Printer238");
         }
         catch(SQLException e)
         {
@@ -256,14 +254,14 @@ public class JDBC2 extends JFrame implements ActionListener
         {
             if( RESULT.next() );
             {
-                TF_ID.setText(RESULT.getString("patientID"));
+                TF_ID.setText(RESULT.getString("patientid"));
                 TF_NAME.setText(RESULT.getString("patientName"));
                 TF_SSN.setText(RESULT.getString("ssn"));
                 TF_DOB.setText(RESULT.getString("dob"));
             }
 
         }
-        catch(Exception X) { System.out.println(X);
+        catch(Exception X) { System.out.println(X + "B_NEXT_ACTION");
         }
     }
     //-------------------------------------------------------------------
