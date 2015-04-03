@@ -1,66 +1,50 @@
 //Making GUI for a database
 import java.sql.*;
+
 import javax.swing.*;
+
+
+
 import java.awt.*;
 import java.awt.event.*;
 
 public class JDBC2 extends JFrame implements ActionListener
 {
-    //Globals
+     //Globals
     Connection CONNEX;
     Statement STATE;
     ResultSet RESULT;
+	
+	private static final int FRAME_WIDTH = 400;
+	private static final int FRAME_HEIGHT = 500;
 
-    //GUI Globals
+	private static final Insets WEST_INSETS = new Insets(5, 0, 5, 5);
+	private static final Insets EAST_INSETS = new Insets(5, 5, 5, 0);
+	// initialize the elements in the frame
+
+	private JPanel panel;
+	 //GUI Globals
     JFrame MainWindow;
+    private JLabel JL_TITLE;
     JLabel JL_ID;
     JLabel JL_NAME;
     JLabel JL_SSN;
     JLabel JL_DOB;
 
-    JLabel JL_NAME2;
-    JLabel JL_NAME4;
-    JLabel JL_DRNAME4;
-
     JTextField TF_ID;
     JTextField TF_NAME;
     JTextField TF_SSN;
     JTextField TF_DOB;
-
-    JTextField TF_SEARCH = new JTextField(10);
-
-    JTextField TF_SEARCH2 = new JTextField(20);
-    JTextField TF_NAME2;
-    JTextField TF_SCHEDULEDDATE2;
-    JTextField TF_SCHEDULEDTIME2;
-
-    JTextField TF_SEARCH4 = new JTextField(20);
-    JTextField TF_DRSEARCH4 = new JTextField(20);
-    JTextField TF_NAME4;
-    JTextField TF_DRNAME4;
-    JTextField TF_COUNT4;
-
-    JButton B_NEXT = new JButton("NEXT");
-    JButton B_PREV = new JButton("PREV");
-    JButton B_FIRST = new JButton("FIRST");
-    JButton B_LAST = new JButton("LAST");
-    JButton B_UPDATE = new JButton("UPDATE");
-    JButton B_DELETE = new JButton("DELETE");
-    JButton B_NEW = new JButton("NEW");
-    JButton B_SAVE = new JButton("SAVE");
-
-
-    JButton B_SEARCH = new JButton("SEARCH");
-    ButtonGroup SearchChoices = new ButtonGroup();
-    JRadioButton RB_ID = new JRadioButton("patientId");
-    JRadioButton RB_NAME = new JRadioButton("patientName");
-    JRadioButton RB_SSN = new JRadioButton("ssn");
-    JRadioButton RB_DOB = new JRadioButton("dob");
-
-    JButton B_SEARCH2 = new JButton("SHOW LIST OF PATIENT VISITS");
-    JButton B_SEARCH4 = new JButton("SHOW LIST OF PATIENT DR");
-
-    //----------------------------------------------------------
+    
+    JButton B_NEXT;
+    JButton B_PREV;
+    JButton B_FIRST;
+    JButton B_LAST;
+    JButton B_UPDATE;
+    JButton B_DELETE;
+    JButton B_NEW;
+    JButton B_SAVE;
+  //----------------------------------------------------------
     public static void main(String[] args) throws Exception
     {
         new JDBC2();
@@ -73,95 +57,187 @@ public class JDBC2 extends JFrame implements ActionListener
         BuildGUI();
         DisplayData();
     }
-    //-------------------------------------------------------------
-    public void BuildGUI()
-    {
-        setLayout(new GridLayout(6, 12));
-        MainWindow = new JFrame();
-        MainWindow.setSize(650,300);
-        MainWindow.setTitle("EHR DATABASE");
-        MainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        JL_ID = new JLabel("ID: ");
-        JL_NAME = new JLabel("NAME: ");
-        JL_SSN = new JLabel("SSN: ");
-        JL_DOB = new JLabel("DOB: ");
+    //-
+    public void BuildGUI() {
+		
+		// specifics for the JFrame of this class DG
+		//this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
+	//	this.setResizable(false);
+    	 MainWindow = new JFrame();
+         MainWindow.setSize(800, 400);
+         MainWindow.setTitle("EHR DATABASE");
+         MainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
-        JL_NAME2 = new JLabel("TYPE IN PART OF NAME: ");
-        JL_NAME4 = new JLabel("Input Patient: ");
-        JL_DRNAME4 = new JLabel("Input Doctor: ");
+		// creates panel DG
+		panel = new JPanel(new GridBagLayout());
+		panel.setSize(700, 300);
+		Color purpleMedium = new Color(93, 119, 178, 150);
+		panel.setBackground(purpleMedium);
 
-        TF_ID = new JTextField(10);
-        TF_NAME = new JTextField(10);
-        TF_SSN = new JTextField(10);
-        TF_DOB = new JTextField(10);
-
-
-
-
-        JPanel BG = new JPanel();
-
-        BG.add(JL_ID);
-        BG.add(TF_ID);
-        BG.add(JL_NAME);
-        BG.add(TF_NAME);
-        BG.add(JL_SSN);
-        BG.add(TF_SSN);
-        BG.add(JL_DOB);
-        BG.add(TF_DOB);
-
-        BG.add(B_NEXT);
-        BG.add(B_PREV);
-        BG.add(B_FIRST);
-        BG.add(B_LAST);
-        BG.add(B_UPDATE);
-        BG.add(B_DELETE);
-        BG.add(B_NEW);
-        BG.add(B_SAVE);
-
-        BG.add(TF_SEARCH);
-        BG.add(B_SEARCH);
-        BG.add(RB_ID);
-        BG.add(RB_NAME);
-        BG.add(RB_SSN);
-        BG.add(RB_DOB);
-
-        BG.add(JL_NAME2);
-        BG.add(TF_SEARCH2);
-        BG.add(B_SEARCH2);
-
-        BG.add(JL_NAME4);
-        BG.add(TF_SEARCH4);
-        BG.add(JL_DRNAME4);
-        BG.add(TF_DRSEARCH4);
-        BG.add(B_SEARCH4);
-
-        B_NEXT.addActionListener(this);
-        B_PREV.addActionListener(this);        
-        B_FIRST.addActionListener(this);        
-        B_LAST.addActionListener(this);      
-        B_UPDATE.addActionListener(this);
-        B_DELETE.addActionListener(this);        
-        B_NEW.addActionListener(this);        
-        B_SAVE.addActionListener(this); 
-        B_SEARCH.addActionListener(this);
-        B_SEARCH2.addActionListener(this);
-        B_SEARCH4.addActionListener(this);
+		// declares the elements in the frame DG
+		 JL_TITLE = new JLabel("Input Patient Data");
+		 JL_TITLE.setFont(new Font("Geneva", Font.ROMAN_BASELINE, 30));
+		
+		 JL_ID = new JLabel("Input Patient ID: ");
+         JL_NAME = new JLabel("Input Patient Name: ");
+         JL_SSN = new JLabel("Input Patient SSN: ");
+         JL_DOB = new JLabel("Input Patient DOB: ");
+         
+		 TF_ID = new JTextField(10);
+         TF_NAME = new JTextField(10);
+         TF_SSN = new JTextField(10);
+         TF_DOB = new JTextField(10);
+	
+         B_NEXT = new JButton("NEXT");
+         B_PREV = new JButton("PREV");
+         B_FIRST = new JButton("FIRST");		
+         B_LAST = new JButton("LAST");
+         
+         B_UPDATE = new JButton("UPDATE");
+         B_DELETE = new JButton("DELETE");
+         B_NEW = new JButton("NEW");
+         B_SAVE = new JButton("SAVE");
+         
+         
+         
 
 
-        //use button group to keep 2 buttons from being pushed simultaneously
-        SearchChoices.add(RB_ID);
-        SearchChoices.add(RB_NAME);
-        SearchChoices.add(RB_SSN);
-        SearchChoices.add(RB_DOB);
-        //start radio button search off on name
-        RB_NAME.setSelected(true);
 
-        MainWindow.add(BG);
 
-        MainWindow.setVisible(true);        
-    }   
+		/**
+		 * Uses Layout tool to position the elements in the panel Gudeman
+		 */
+		// creates an object to hold the gridBaglayout constraints DG
+         GridBagConstraints c = new GridBagConstraints();
+
+		// sets the distance between elements DG
+		c.insets = new Insets(5, 5, 5, 5);
+
+		// use GridBagLayout specifications to position the components DG
+		
+		c.anchor = GridBagConstraints.CENTER ;
+		c.weightx = 1;
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridwidth = 4;
+		panel.add(JL_TITLE, c);
+
+		c.weightx = 0.5;
+		c.anchor = GridBagConstraints.EAST ;
+		c.gridy = 1;
+		c.gridx = 0;
+		c.gridwidth = 1;
+		c.ipady = 10;
+		panel.add(JL_ID, c);
+
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridy = 1;
+		c.gridx = 1;
+		c.gridwidth = 3;
+		panel.add(TF_ID, c);
+		
+		c.weightx = 0.5;
+		c.fill = GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.EAST ;
+		c.gridy = 2;
+		c.gridx = 0;
+		c.gridwidth = 1;
+		panel.add(JL_NAME, c);
+
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridy = 2;
+		c.gridx = 1;
+		c.gridwidth = 3;
+		panel.add(TF_NAME, c);
+		
+		c.weightx = 0.5;
+		c.fill = GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.EAST ;
+		c.gridy = 3;
+		c.gridx = 0;
+		c.gridwidth = 1;
+		c.ipady = 10;
+		panel.add(JL_SSN, c);
+
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridy = 3;
+		c.gridx = 1;
+		c.gridwidth = 3;
+		panel.add(TF_SSN, c);
+		
+		c.weightx = 0.5;
+		c.fill = GridBagConstraints.NONE;
+		c.anchor = GridBagConstraints.EAST ;
+		c.gridy = 4;
+		c.gridx = 0;
+		c.gridwidth = 1;
+		c.ipady = 10;
+		panel.add(JL_DOB, c);
+
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridy = 4;
+		c.gridx = 1;
+		c.gridwidth = 3;
+		panel.add(TF_DOB, c);
+		
+		c.gridy = 5;
+		c.gridx = 0;
+		c.gridwidth = 1;
+		c.ipady = 20;
+		panel.add(B_NEXT, c);
+
+		c.gridy = 5;
+		c.gridx = 1;
+		c.gridwidth = 1;
+		panel.add(B_PREV, c);
+
+		c.gridy = 5;
+		c.gridx = 2;
+		c.gridwidth = 1;
+		panel.add(B_FIRST, c);
+
+		c.gridy = 5;
+		c.gridx = 3;
+		c.gridwidth = 1;
+		panel.add(B_LAST, c);
+		
+		c.gridy = 6;
+		c.gridx = 0;
+		c.gridwidth = 1;
+		panel.add(B_UPDATE, c);
+
+		c.gridy = 6;
+		c.gridx = 1;
+		c.gridwidth = 1;
+		panel.add(B_DELETE, c);
+
+		c.gridy = 6;
+		c.gridx = 2;
+		c.gridwidth = 1;
+		panel.add(B_NEW, c);
+
+		c.gridy = 6;
+		c.gridx = 3;
+		c.gridwidth = 1;
+		panel.add(B_SAVE, c);
+		
+		 B_NEXT.addActionListener(this);
+	        B_PREV.addActionListener(this);        
+	        B_FIRST.addActionListener(this);        
+	        B_LAST.addActionListener(this);      
+	        B_UPDATE.addActionListener(this);
+	        B_DELETE.addActionListener(this);        
+	        B_NEW.addActionListener(this);        
+	        B_SAVE.addActionListener(this); 
+	       
+		
+		      
+            MainWindow.add(panel, BorderLayout.CENTER);
+
+            MainWindow.setVisible(true);        
+        }       
+      
 
     //--------------------------------------------------------------
     public void Connect() throws Exception
@@ -236,34 +312,33 @@ public class JDBC2 extends JFrame implements ActionListener
         if(SRC == B_SAVE)
         { B_SAVE_ACTION(); }
 
-        if (SRC == B_SEARCH)
+   /*     if (SRC == B_SEARCH)
         { B_SEARCH_ACTION();}
 
         if (SRC == B_SEARCH2)
         { B_SEARCH_ACTION2();}
 
         if (SRC == B_SEARCH4)
-        { B_SEARCH_ACTION4();}
+        { B_SEARCH_ACTION4();} */
 
 
     }
     //---------------------------------------------------------------------------
-    public void B_NEXT_ACTION()
-    {
-        try
-        {
-            if( RESULT.next() );
-            {
-                TF_ID.setText(RESULT.getString("patientid"));
-                TF_NAME.setText(RESULT.getString("patientName"));
-                TF_SSN.setText(RESULT.getString("ssn"));
-                TF_DOB.setText(RESULT.getString("dob"));
-            }
+	public void B_NEXT_ACTION() {
+		try {
+			if (RESULT.next())
+				;
+			{
+				TF_ID.setText(RESULT.getString("patientid"));
+				TF_NAME.setText(RESULT.getString("patientName"));
+				TF_SSN.setText(RESULT.getString("ssn"));
+				TF_DOB.setText(RESULT.getString("dob"));
+			}
 
-        }
-        catch(Exception X) { System.out.println(X + "B_NEXT_ACTION");
-        }
-    }
+		} catch (Exception X) {
+			System.out.println(X + "B_NEXT_ACTION");
+		}
+	}
     //-------------------------------------------------------------------
     public void B_PREV_ACTION()
     {
@@ -366,7 +441,7 @@ public class JDBC2 extends JFrame implements ActionListener
         catch(Exception X) { System.out.println(X);}
     }
     //--------------------------------------------------------------------------
-    public void B_SEARCH_ACTION()
+  /*  public void B_SEARCH_ACTION()
     {
         String SearchItem = TF_SEARCH.getText();
         System.out.println(TF_SEARCH.getText());
@@ -562,7 +637,7 @@ public class JDBC2 extends JFrame implements ActionListener
             TF_COUNT4.setText(RESULT.getString("count"));
         }
         catch(Exception X) {}
-    }
+    } */
     //--------------------DR-PT LOOKUP--------------------------------
 
 
