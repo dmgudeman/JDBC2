@@ -1,169 +1,43 @@
-//Making GUI for a database
-import java.sql.*;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
-public class JDBC2 extends JFrame implements ActionListener
-{
-    //Globals
+import javax.swing.JOptionPane;
+
+
+public class DModel {
+    
+	 //Globals
     Connection CONNEX;
     Statement STATE;
     ResultSet RESULT;
-
-    //GUI Globals
-    JFrame MainWindow;
-    JLabel JL_ID;
-    JLabel JL_NAME;
-    JLabel JL_SSN;
-    JLabel JL_DOB;
-
-    JLabel JL_NAME2;
-    JLabel JL_NAME4;
-    JLabel JL_DRNAME4;
-
-    JTextField TF_ID;
-    JTextField TF_NAME;
-    JTextField TF_SSN;
-    JTextField TF_DOB;
-
-    JTextField TF_SEARCH = new JTextField(10);
-
-    JTextField TF_SEARCH2 = new JTextField(20);
-    JTextField TF_NAME2;
-    JTextField TF_SCHEDULEDDATE2;
-    JTextField TF_SCHEDULEDTIME2;
-
-    JTextField TF_SEARCH4 = new JTextField(20);
-    JTextField TF_DRSEARCH4 = new JTextField(20);
-    JTextField TF_NAME4;
-    JTextField TF_DRNAME4;
-    JTextField TF_COUNT4;
-
-    JButton B_NEXT = new JButton("NEXT");
-    JButton B_PREV = new JButton("PREV");
-    JButton B_FIRST = new JButton("FIRST");
-    JButton B_LAST = new JButton("LAST");
-    JButton B_UPDATE = new JButton("UPDATE");
-    JButton B_DELETE = new JButton("DELETE");
-    JButton B_NEW = new JButton("NEW");
-    JButton B_SAVE = new JButton("SAVE");
-
-
-    JButton B_SEARCH = new JButton("SEARCH");
-    ButtonGroup SearchChoices = new ButtonGroup();
-    JRadioButton RB_ID = new JRadioButton("patientId");
-    JRadioButton RB_NAME = new JRadioButton("patientName");
-    JRadioButton RB_SSN = new JRadioButton("ssn");
-    JRadioButton RB_DOB = new JRadioButton("dob");
-
-    JButton B_SEARCH2 = new JButton("SHOW LIST OF PATIENT VISITS");
-    JButton B_SEARCH4 = new JButton("SHOW LIST OF PATIENT DR");
-
-    //----------------------------------------------------------
-    public static void main(String[] args) throws Exception
-    {
-        new JDBC2();
+    DDelegate ddelegate;
+  
+	
+	public static void main(String[] args) throws Exception
+	{
+       
+      new DModel();
+      
+       
     }
     //-----------------------------------------------------------
-    public JDBC2() throws Exception
+    public DModel() throws Exception
     {
+    	
+    	ddelegate = new DDelegate(this);
         Connect();
         SelectData();
-        BuildGUI();
+        
         DisplayData();
     }
-    //-------------------------------------------------------------
-    public void BuildGUI()
-    {
-        setLayout(new GridLayout(6, 12));
-        MainWindow = new JFrame();
-        MainWindow.setSize(650,300);
-        MainWindow.setTitle("EHR DATABASE");
-        MainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JL_ID = new JLabel("ID: ");
-        JL_NAME = new JLabel("NAME: ");
-        JL_SSN = new JLabel("SSN: ");
-        JL_DOB = new JLabel("DOB: ");
-
-
-        JL_NAME2 = new JLabel("TYPE IN PART OF NAME: ");
-        JL_NAME4 = new JLabel("Input Patient: ");
-        JL_DRNAME4 = new JLabel("Input Doctor: ");
-
-        TF_ID = new JTextField(10);
-        TF_NAME = new JTextField(10);
-        TF_SSN = new JTextField(10);
-        TF_DOB = new JTextField(10);
-
-
-
-
-        JPanel BG = new JPanel();
-
-        BG.add(JL_ID);
-        BG.add(TF_ID);
-        BG.add(JL_NAME);
-        BG.add(TF_NAME);
-        BG.add(JL_SSN);
-        BG.add(TF_SSN);
-        BG.add(JL_DOB);
-        BG.add(TF_DOB);
-
-        BG.add(B_NEXT);
-        BG.add(B_PREV);
-        BG.add(B_FIRST);
-        BG.add(B_LAST);
-        BG.add(B_UPDATE);
-        BG.add(B_DELETE);
-        BG.add(B_NEW);
-        BG.add(B_SAVE);
-
-        BG.add(TF_SEARCH);
-        BG.add(B_SEARCH);
-        BG.add(RB_ID);
-        BG.add(RB_NAME);
-        BG.add(RB_SSN);
-        BG.add(RB_DOB);
-
-        BG.add(JL_NAME2);
-        BG.add(TF_SEARCH2);
-        BG.add(B_SEARCH2);
-
-        BG.add(JL_NAME4);
-        BG.add(TF_SEARCH4);
-        BG.add(JL_DRNAME4);
-        BG.add(TF_DRSEARCH4);
-        BG.add(B_SEARCH4);
-
-        B_NEXT.addActionListener(this);
-        B_PREV.addActionListener(this);        
-        B_FIRST.addActionListener(this);        
-        B_LAST.addActionListener(this);      
-        B_UPDATE.addActionListener(this);
-        B_DELETE.addActionListener(this);        
-        B_NEW.addActionListener(this);        
-        B_SAVE.addActionListener(this); 
-        B_SEARCH.addActionListener(this);
-        B_SEARCH2.addActionListener(this);
-        B_SEARCH4.addActionListener(this);
-
-
-        //use button group to keep 2 buttons from being pushed simultaneously
-        SearchChoices.add(RB_ID);
-        SearchChoices.add(RB_NAME);
-        SearchChoices.add(RB_SSN);
-        SearchChoices.add(RB_DOB);
-        //start radio button search off on name
-        RB_NAME.setSelected(true);
-
-        MainWindow.add(BG);
-
-        MainWindow.setVisible(true);        
-    }   
-
-    //--------------------------------------------------------------
+	
+	
+	 //--------------------------------------------------------------
     public void Connect() throws Exception
     {
 
@@ -200,72 +74,36 @@ public class JDBC2 extends JFrame implements ActionListener
         {
             RESULT.next();
 
-            TF_ID.setText(RESULT.getString("patientID"));
-            TF_NAME.setText(RESULT.getString("patientName"));
-            TF_SSN.setText(RESULT.getString("ssn"));
-            TF_DOB.setText(RESULT.getString("dob"));
+            ddelegate.TF_ID.setText(RESULT.getString("patientID"));
+            ddelegate.TF_NAME.setText(RESULT.getString("patientName"));
+            ddelegate.TF_SSN.setText(RESULT.getString("ssn"));
+            ddelegate.TF_DOB.setText(RESULT.getString("dob"));
         }
         catch(Exception X) {}
     }
     //---------------------------------------------------------------------------
-    public void actionPerformed(ActionEvent X)
-    {
-        Object SRC = X.getSource();
-
-        if(SRC == B_NEXT)
-        { B_NEXT_ACTION(); }
-
-        if(SRC == B_PREV)
-        { B_PREV_ACTION(); }
-
-        if(SRC == B_FIRST)
-        { B_FIRST_ACTION(); }
-
-        if(SRC == B_LAST)
-        { B_LAST_ACTION(); }
-
-        if(SRC == B_UPDATE)
-        { B_UPDATE_ACTION(); }
-
-        if(SRC == B_DELETE)
-        { B_DELETE_ACTION(); }
-
-        if(SRC == B_NEW)
-        { B_NEW_ACTION(); }
-
-        if(SRC == B_SAVE)
-        { B_SAVE_ACTION(); }
-
-        if (SRC == B_SEARCH)
-        { B_SEARCH_ACTION();}
-
-        if (SRC == B_SEARCH2)
-        { B_SEARCH_ACTION2();}
-
-        if (SRC == B_SEARCH4)
-        { B_SEARCH_ACTION4();}
-
-
-    }
+   
     //---------------------------------------------------------------------------
     public void B_NEXT_ACTION()
     {
         try
-        {
+        {  System.out.println("NEXT Button has been clicked");
             if( RESULT.next() );
-            {
-                TF_ID.setText(RESULT.getString("patientid"));
-                TF_NAME.setText(RESULT.getString("patientName"));
-                TF_SSN.setText(RESULT.getString("ssn"));
-                TF_DOB.setText(RESULT.getString("dob"));
-            }
+    {
+            	
+            	
+           ddelegate.TF_ID.setText(RESULT.getString("patientid"));
+               ddelegate.TF_NAME.setText(RESULT.getString("patientName"));
+               ddelegate.TF_SSN.setText(RESULT.getString("ssn"));
+               ddelegate.TF_DOB.setText(RESULT.getString("dob")); 
+            } 
 
         }
         catch(Exception X) { System.out.println(X + "B_NEXT_ACTION");
         }
     }
-    //-------------------------------------------------------------------
-    public void B_PREV_ACTION()
+/**************************  
+   public void B_PREV_ACTION()
     {
         try
         {
@@ -563,7 +401,7 @@ public class JDBC2 extends JFrame implements ActionListener
         }
         catch(Exception X) {}
     }
-    //--------------------DR-PT LOOKUP--------------------------------
+*/
 
 
 }
