@@ -13,7 +13,7 @@ public class CModel {
 	static Connection CONNEX;
 	Statement STATE;
 	private CController ccontroller;
-    ResultSet resultSet;
+    static ResultSet RESULT;
 	private CView cview;
 
     public CModel(CController ccontroller, CView cview ) throws Exception {
@@ -33,9 +33,9 @@ public class CModel {
             STATE = CONNEX.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
                     ResultSet.CONCUR_UPDATABLE);
             String SQL = "Select * FROM patients ORDER BY patientID";
-            resultSet = STATE.executeQuery(SQL);
+            RESULT = STATE.executeQuery(SQL);
             System.out.println("SelectData called");
-            System.out.println(resultSet.toString());
+            System.out.println(RESULT.toString());
         }
         catch(Exception X){
         	
@@ -46,7 +46,7 @@ public class CModel {
  
         try {
         	 System.out.println("DIsplayData Called");
-          //   resultSet.next();
+          //   RESULT.next();
             
         	
           //  cview.TF_ID.setText(resultSet.getString("patientid"));
@@ -55,7 +55,7 @@ public class CModel {
             System.out.println("DIsplayData Called 2");
           //  cview.TF_SSN.setText(resultSet.getString("ssn"));
           //  cview.TF_DOB.setText(resultSet.getString("dob"));
-            System.out.println("is null" + (resultSet.toString()));
+            System.out.println("is null" + (RESULT.toString()));
             
         }
         catch(Exception X) {
