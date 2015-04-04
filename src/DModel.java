@@ -102,32 +102,32 @@ public class DModel {
         catch(Exception X) { System.out.println(X + "B_NEXT_ACTION");
         }
     }
-/**************************  
+
    public void B_PREV_ACTION()
     {
         try
         {
             if( RESULT.previous() );
             {
-                TF_ID.setText(RESULT.getString("patientID"));
-                TF_NAME.setText(RESULT.getString("patientName"));
-                TF_SSN.setText(RESULT.getString("ssn"));
-                TF_DOB.setText(RESULT.getString("dob"));
+            	 ddelegate.TF_ID.setText(RESULT.getString("patientID"));
+            	 ddelegate.TF_NAME.setText(RESULT.getString("patientName"));
+            	 ddelegate.TF_SSN.setText(RESULT.getString("ssn"));
+            	 ddelegate.TF_DOB.setText(RESULT.getString("dob"));
             }  
         }
         catch(Exception X) { System.out.println(X);
         }
     }
-    //-----------------------------------------------------------------------
+
     public void B_FIRST_ACTION()
     {
         try
         {
             RESULT.first();
-            TF_ID.setText(RESULT.getString("patientID"));
-            TF_NAME.setText(RESULT.getString("patientName"));
-            TF_SSN.setText(RESULT.getString("ssn"));
-            TF_DOB.setText(RESULT.getString("dob"));
+            ddelegate.TF_ID.setText(RESULT.getString("patientID"));
+            ddelegate.TF_NAME.setText(RESULT.getString("patientName"));
+            ddelegate.TF_SSN.setText(RESULT.getString("ssn"));
+            ddelegate.TF_DOB.setText(RESULT.getString("dob"));
         }
         catch(Exception X) { System.out.println(X);}
     }
@@ -137,10 +137,10 @@ public class DModel {
         try
         {
             RESULT.last();
-            TF_ID.setText(RESULT.getString("patientID"));
-            TF_NAME.setText(RESULT.getString("patientName"));
-            TF_SSN.setText(RESULT.getString("ssn"));
-            TF_DOB.setText(RESULT.getString("dob"));
+            ddelegate.TF_ID.setText(RESULT.getString("patientID"));
+            ddelegate.TF_NAME.setText(RESULT.getString("patientName"));
+            ddelegate.TF_SSN.setText(RESULT.getString("ssn"));
+            ddelegate.TF_DOB.setText(RESULT.getString("dob"));
         }
         catch(Exception X) { System.out.println(X);}
     }
@@ -149,10 +149,10 @@ public class DModel {
     {
         try
         {
-            RESULT.updateInt("patientId", Integer.parseInt(TF_ID.getText()));
-            RESULT.updateString("patientName", TF_NAME.getText());
-            RESULT.updateInt("ssn", Integer.parseInt(TF_SSN.getText()));
-            RESULT.updateString("dob", (TF_DOB.getText()));
+            RESULT.updateInt("patientId", Integer.parseInt( ddelegate.TF_ID.getText()));
+            RESULT.updateString("patientName",  ddelegate.TF_NAME.getText());
+            RESULT.updateInt("ssn", Integer.parseInt( ddelegate.TF_SSN.getText()));
+            RESULT.updateString("dob", ( ddelegate.TF_DOB.getText()));
             RESULT.updateRow();
             JOptionPane.showMessageDialog(null, "Updated!");
         }
@@ -175,10 +175,10 @@ public class DModel {
     //-------------------------------------------------------------------------
     public void B_NEW_ACTION()
     {
-        TF_ID.setText("");
-        TF_NAME.setText("");
-        TF_SSN.setText("");
-        TF_DOB.setText("");
+    	 ddelegate.TF_ID.setText("");
+    	 ddelegate.TF_NAME.setText("");
+    	 ddelegate.TF_SSN.setText("");
+    	 ddelegate.TF_DOB.setText("");
     }
     //----------------------------------------------------------------------
     public void B_SAVE_ACTION()
@@ -187,10 +187,10 @@ public class DModel {
         {
             RESULT.moveToInsertRow();
 
-            RESULT.updateInt("patientId", Integer.parseInt(TF_ID.getText()));
-            RESULT.updateString("patientName", TF_NAME.getText());
-            RESULT.updateInt("ssn", Integer.parseInt(TF_SSN.getText()));
-            RESULT.updateString("dob",(TF_DOB.getText()));
+            RESULT.updateInt("patientId", Integer.parseInt( ddelegate.TF_ID.getText()));
+            RESULT.updateString("patientName",  ddelegate.TF_NAME.getText());
+            RESULT.updateInt("ssn", Integer.parseInt( ddelegate.TF_SSN.getText()));
+            RESULT.updateString("dob",( ddelegate.TF_DOB.getText()));
             RESULT.insertRow();
 
             STATE.close();
@@ -203,7 +203,7 @@ public class DModel {
         }
         catch(Exception X) { System.out.println(X);}
     }
-    //--------------------------------------------------------------------------
+ /*********************************--------------------------
     public void B_SEARCH_ACTION()
     {
         String SearchItem = TF_SEARCH.getText();
