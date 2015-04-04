@@ -9,8 +9,9 @@ public class CMain {
 	
 	 public static void main(String[] args) throws Exception
 	    {    
+		      
 		      Connect();
-		      CView cview = new CView();
+		      CView cview = new CView(null);
 		      CModel cmodel = new CModel();
 		      cmodel.SelectData();
 			  cmodel.DisplayData();

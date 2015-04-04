@@ -9,7 +9,9 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-public class CView {
+class CView {
+	CButtonHandler buttonHandler = new CButtonHandler();
+	CController ccontroller;
 	
 	JFrame MainWindow;
 	JLabel JL_ID;
@@ -57,12 +59,16 @@ public class CView {
 
 	JButton B_SEARCH2 = new JButton("SHOW LIST OF PATIENT VISITS");
 	JButton B_SEARCH4 = new JButton("SHOW LIST OF PATIENT DR");
+	
+    
 
-	CView() {
+	CView(CController ccontroller) {
+		this.ccontroller = ccontroller;
         BuildGUI();
 	};
 
 	public void BuildGUI() {
+		
 		setLayout(new GridLayout(6, 12));
 		MainWindow = new JFrame();
 		MainWindow.setSize(650, 300);
@@ -86,6 +92,7 @@ public class CView {
 		
 
 		JPanel BG = new JPanel();
+		
 
 		BG.add(JL_ID);
 		BG.add(TF_ID);
@@ -95,8 +102,10 @@ public class CView {
 		BG.add(TF_SSN);
 		BG.add(JL_DOB);
 		BG.add(TF_DOB);
-
+		
 		BG.add(B_NEXT);
+		B_NEXT.addActionListener(buttonHandler);
+		
 		BG.add(B_PREV);
 		BG.add(B_FIRST);
 		BG.add(B_LAST);

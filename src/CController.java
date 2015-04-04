@@ -23,29 +23,6 @@ public class CController {
 
 	
 
-	public void actionPerformed(ActionEvent ae) {
-
-		if (ae.getActionCommand().equals("B_NEXT")) {
-			System.out.println("NEXT Pressed");
-			cmodel.B_NEXT_ACTION();
-		}
-
-		/*
-		 * if(SRC == B_PREV) { B_PREV_ACTION(); }
-		 * 
-		 * if(SRC == B_FIRST) { B_FIRST_ACTION(); }
-		 * 
-		 * if(SRC == B_LAST) { B_LAST_ACTION(); }
-		 * 
-		 * if(SRC == B_UPDATE) { B_UPDATE_ACTION(); }
-		 * 
-		 * if(SRC == B_DELETE) { B_DELETE_ACTION(); }
-		 * 
-		 * if(SRC == B_NEW) { B_NEW_ACTION(); }
-		 * 
-		 * if(SRC == B_SAVE) { B_SAVE_ACTION(); }
-		 */
-
-	}
+	
 	// --
 }
