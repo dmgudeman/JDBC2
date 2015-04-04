@@ -9,16 +9,18 @@ import java.awt.event.*;
 public class CModel {
 
     
-
+	static Connection CONNEX;
+	Statement STATE;
 	private CController ccontroller;
     ResultSet resultSet;
 	private CView cview;
 
     public CModel(CController ccontroller, CView cview ) throws Exception {
        this.ccontroller = ccontroller;
-       this.cview = cview;
-        
+       this.cview = cview;   
     }
+    
+   
    
     public CModel() {
 		// TODO Auto-generated constructor stub
@@ -26,11 +28,13 @@ public class CModel {
 
 	public void SelectData() {
         try {
-            ccontroller.STATE = ccontroller.CONNEX.createStatement();
-            ccontroller.STATE = ccontroller.CONNEX.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
+            STATE = CONNEX.createStatement();
+            STATE = CONNEX.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
                     ResultSet.CONCUR_UPDATABLE);
             String SQL = "Select * FROM patients ORDER BY patientID";
-            resultSet = ccontroller.STATE.executeQuery(SQL);
+            resultSet = STATE.executeQuery(SQL);
+            System.out.println("SelectData called");
+            System.out.println(resultSet.toString());
         }
         catch(Exception X){
         	
@@ -40,20 +44,26 @@ public class CModel {
     public void DisplayData() throws Exception {
  
         try {
-            resultSet.next();
-
-            cview.TF_ID.setText(resultSet.getString("patientID"));
-            cview.TF_NAME.setText(resultSet.getString("patientName"));
-            cview.TF_SSN.setText(resultSet.getString("ssn"));
-            cview.TF_DOB.setText(resultSet.getString("dob"));
+        	 System.out.println("DIsplayData Called");
+          //   resultSet.next();
+            
+        	
+          //  cview.TF_ID.setText(resultSet.getString("patientid"));
+            
+          //  cview.TF_NAME.setText(resultSet.getString("patientName"));
+            System.out.println("DIsplayData Called 2");
+          //  cview.TF_SSN.setText(resultSet.getString("ssn"));
+          //  cview.TF_DOB.setText(resultSet.getString("dob"));
+            System.out.println("is null" + (resultSet.toString()));
+            
         }
         catch(Exception X) {
         	
         }
     }
    
-    public void B_NEXT_ACTION() {
-    
+    public void B_NEXT_ACTION() throws SQLException {
+       
         try {
             if(resultSet.next() ) {
             	cview.TF_ID.setText(resultSet.getString("patientid"));
@@ -65,6 +75,7 @@ public class CModel {
         }
         catch(Exception X) { 
         	System.out.println(X + "B_NEXT_ACTION");
+        	
         }
     }
 }

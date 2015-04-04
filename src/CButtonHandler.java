@@ -1,5 +1,6 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 
 public class CButtonHandler implements ActionListener {
@@ -9,9 +10,14 @@ public class CButtonHandler implements ActionListener {
 		CModel cmodel = new CModel();
 		System.out.println(ae.getActionCommand());
 
-		if (ae.getActionCommand().equals("B_NEXT")) {
+		if (ae.getActionCommand().equals("NEXT")) {
 			
-			cmodel.B_NEXT_ACTION();
+			try {
+				cmodel.B_NEXT_ACTION();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		/*

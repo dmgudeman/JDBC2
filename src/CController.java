@@ -7,8 +7,7 @@ import java.sql.Statement;
 public class CController {
 
 	// Globals
-	static Connection CONNEX;
-	static Statement STATE;
+	
 	private CModel cmodel;
 	private CView cview;
 
@@ -24,5 +23,5 @@ public class CController {
 	
 
 	
-	// --
+	
 }
