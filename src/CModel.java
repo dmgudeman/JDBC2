@@ -1,5 +1,6 @@
 //Making GUI for a database
 import java.sql.*;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -62,7 +63,7 @@ public class CModel {
         }
     }
    
-    public void B_NEXT_ACTION() throws SQLException {
+/*    public void B_NEXT_ACTION() throws SQLException {
        
         try {
             if(resultSet.next() ) {
@@ -77,6 +78,38 @@ public class CModel {
         	System.out.println(X + "B_NEXT_ACTION");
         	
         }
+    } */
+   //public String SelectXData()
+    public void B_NEXT_ACTION() throws SQLException {
+    
+        try
+        {   ArrayList <String[]> result = new ArrayList<String[]>();
+      
+        
+        System.out.println("1");
+        STATE = CONNEX.createStatement();// what is this statment for
+        STATE = CONNEX.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                ResultSet.CONCUR_UPDATABLE);
+        String SQL = "Select * FROM patients ORDER BY patientid";
+        ResultSet rs = STATE.executeQuery(SQL);
+        int columnCount = rs.getMetaData().getColumnCount();
+        while(rs.next())
+        {
+            String[] row = new String[columnCount];
+            for (int i=0; i <columnCount ; i++)
+            {
+               row[i] = rs.getString(i + 1);
+            System.out.println(row[i]);
+            }
+            result.add(row);
+            
+        }
+
+         
+            
+        }
+        catch(Exception X){}
+		
     }
 }
     //-------------------------------------------------------------------
